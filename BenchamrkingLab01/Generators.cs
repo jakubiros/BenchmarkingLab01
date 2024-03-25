@@ -33,6 +33,22 @@ namespace BenchmarkingLab01
             Array.Reverse(a);
             return a;
         }
+        public static int[] AlmostSorted(int size, int minVal, int maxVal, double percentage=0.1)
+        {
+            int[] a = GenerateSorted(size, minVal, maxVal);
+            foreach (var item in a) { var t = item; }
+            int minCount = (int)(size * percentage);
+            var rand = new Random();
+            for (int i = 0; i< minCount; i++)
+            {
+                int index1 = rand.Next(size);
+                int index2 = rand.Next(size);
+                int temp = a[index1];
+                a[index1] = a[index2];
+                a[index2] = temp;
+            }
+            return a;
+        }
 
     }
 }
