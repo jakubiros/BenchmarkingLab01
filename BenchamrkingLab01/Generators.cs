@@ -50,5 +50,11 @@ namespace BenchmarkingLab01
             return a;
         }
 
+        public static int[] FewUnique(int size=100)
+        {
+            int[] a = GenerateRandom(size, 1, 10);
+            return a;
+        }
+
     }
 }
