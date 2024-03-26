@@ -17,10 +17,10 @@ namespace BenchmarkingLab01
         {
             arrays = new Dictionary<string, int[]>
             {
-                { "Random", Generators.GenerateRandom(10,1,100) },
-                { "Sorted", Generators.GenerateSorted(10,1,100) },
-                { "Reversed", Generators.GenerateReversed(10,1,100) },
-                { "AlmostSorted", Generators.AlmostSorted(10,1,100) },
+                { "Random", Generators.GenerateRandom(10,1,10000) },
+                { "Sorted", Generators.GenerateSorted(10,1,10000) },
+                { "Reversed", Generators.GenerateReversed(10,1,10000) },
+                { "AlmostSorted", Generators.AlmostSorted(10,1,10000) },
                 { "Few Unique", Generators.FewUnique(10) }
             };
         }
@@ -51,6 +51,72 @@ namespace BenchmarkingLab01
                 arrClone[j + 1] = key;
             }
             return arrClone;
+        }
+        [Benchmark]
+        public void MergeSort()
+        {
+            int[] arrClone = (int[])arrays[ArrayName].Clone();
+            sort(arrClone, 0, arrClone.Length - 1);
+        }
+        private void merge(int[] arr, int l, int m, int r)
+        {
+            int n1 = m - l + 1;
+            int n2 = r - m;
+
+            int[] L = new int[n1];
+            int[] R = new int[n2];
+            int i, j;
+
+            for (i = 0; i < n1; ++i)
+                L[i] = arr[l + i];
+            for (j = 0; j < n2; ++j)
+                R[j] = arr[m + 1 + j];
+
+            i = 0;
+            j = 0;
+
+            int k = l;
+            while (i < n1 && j < n2)
+            {
+                if (L[i] <= R[j])
+                {
+                    arr[k] = L[i];
+                    i++;
+                }
+                else
+                {
+                    arr[k] = R[j];
+                    j++;
+                }
+                k++;
+            }
+
+            while (i < n1)
+            {
+                arr[k] = L[i];
+                i++;
+                k++;
+            }
+
+            while (j < n2)
+            {
+                arr[k] = R[j];
+                j++;
+                k++;
+            }
+        }
+        private void sort(int[] arr, int l, int r)
+        {
+            if (l < r)
+            {
+                int m = l + (r - l) / 2;
+
+                sort(arr, l, m);
+                sort(arr, m + 1, r);
+
+                merge(arr, l, m, r);
+            }
+
         }
     }
 }
