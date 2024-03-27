@@ -17,11 +17,11 @@ namespace BenchmarkingLab01
         {
             arrays = new Dictionary<string, int[]>
             {
-                { "Random", Generators.GenerateRandom(10,1,10000) },
-                { "Sorted", Generators.GenerateSorted(10,1,10000) },
-                { "Reversed", Generators.GenerateReversed(10,1,10000) },
-                { "AlmostSorted", Generators.AlmostSorted(10,1,10000) },
-                { "Few Unique", Generators.FewUnique(10) }
+                { "Random", Generators.GenerateRandom(100,1,1000) },
+                { "Sorted", Generators.GenerateSorted(100,1,1000) },
+                { "Reversed", Generators.GenerateReversed(100,1,1000) },
+                { "AlmostSorted", Generators.AlmostSorted(100,1,1000) },
+                { "Few Unique", Generators.FewUnique(100) }
             };
         }
 
@@ -117,6 +117,46 @@ namespace BenchmarkingLab01
                 merge(arr, l, m, r);
             }
 
+        }
+        [Benchmark]
+        public void QuickSort()
+        {
+            int[] arrClone = (int[])arrays[ArrayName].Clone();
+            quickSort(arrClone, 0, arrClone.Length - 1);
+        }
+
+        private void swap(int[] arr, int i, int j)
+        {
+            int temp = arr[i];
+            arr[i] = arr[j];
+            arr[j] = temp;
+        }
+        private int partition(int[] arr, int low, int high)
+        {
+            int pivot = arr[high];
+
+            int i = (low - 1);
+
+            for (int j = low; j <= high - 1; j++)
+            {
+                if (arr[j] < pivot)
+                {
+                    i++;
+                    swap(arr, i, j);
+                }
+            }
+            swap(arr, i + 1, high);
+            return (i + 1);
+        }
+        private void quickSort(int[] arr, int low, int high)
+        {
+            if (low < high)
+            {
+                int pi = partition(arr, low, high);
+
+                quickSort(arr, low, pi - 1);
+                quickSort(arr, pi + 1, high);
+            }
         }
     }
 }
