@@ -1,4 +1,8 @@
-﻿using BenchmarkDotNet.Running;
+﻿using BenchmarkDotNet.Configs;
+using BenchmarkDotNet.Jobs;
+using BenchmarkDotNet.Running;
+using BenchmarkDotNet.Toolchains.InProcess.Emit;
+using BenchmarkDotNet.Toolchains.InProcess.NoEmit;
 
 namespace BenchmarkingLab01
 {
@@ -6,7 +10,7 @@ namespace BenchmarkingLab01
     {
         static void Main(string[] args)
         {
-            var summary = BenchmarkRunner.Run(typeof(SortingAlgorithms));
+            var summary = BenchmarkRunner.Run<SortingAlgorithms>();
         }
     }
 }

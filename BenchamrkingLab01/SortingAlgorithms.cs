@@ -17,11 +17,21 @@ namespace BenchmarkingLab01
         {
             arrays = new Dictionary<string, int[]>
             {
-                { "Random", Generators.GenerateRandom(100,1,1000) },
-                { "Sorted", Generators.GenerateSorted(100,1,1000) },
-                { "Reversed", Generators.GenerateReversed(100,1,1000) },
-                { "AlmostSorted", Generators.AlmostSorted(100,1,1000) },
-                { "Few Unique", Generators.FewUnique(100) }
+                { "Random_10n", Generators.GenerateRandom(10,1,10000) },
+                { "Sorted_10n", Generators.GenerateSorted(10,1,10000) },
+                { "Reversed_10n", Generators.GenerateReversed(10,1,10000) },
+                { "AlmostSorted_10n", Generators.AlmostSorted(10,1,10000) },
+                { "Few Unique_10n", Generators.FewUnique(10) },
+                { "Random_1000n", Generators.GenerateRandom(1000,1,10000) },
+                { "Sorted_1000n", Generators.GenerateSorted(1000,1,10000) },
+                { "Reversed_1000n", Generators.GenerateReversed(1000,1,10000) },
+                { "AlmostSorted_1000n", Generators.AlmostSorted(1000,1,10000) },
+                { "Few Unique_1000n", Generators.FewUnique(1000) },
+                { "Random_100000n", Generators.GenerateRandom(100000,1,10000) },
+                { "Sorted_100000n", Generators.GenerateSorted(100000,1,10000) },
+                { "Reversed_100000n", Generators.GenerateReversed(100000,1,10000) },
+                { "AlmostSorted_100000n", Generators.AlmostSorted(100000,1,10000) },
+                { "Few Unique_100000n", Generators.FewUnique(100000) }
             };
         }
 
@@ -31,12 +41,12 @@ namespace BenchmarkingLab01
         }
 
         [ParamsSource(nameof(GetArrayNames))]
-        public string ArrayName { get; set; }
+        public string AlgorithmName { get; set; }
 
         [Benchmark]
         public int[] InsertionSort()
         {
-            int[] arrClone = (int[])arrays[ArrayName].Clone();
+            int[] arrClone = (int[])arrays[AlgorithmName].Clone();
             int n = arrClone.Length;
             for (int i = 1; i < n; ++i)
             {
@@ -55,7 +65,7 @@ namespace BenchmarkingLab01
         [Benchmark]
         public void MergeSort()
         {
-            int[] arrClone = (int[])arrays[ArrayName].Clone();
+            int[] arrClone = (int[])arrays[AlgorithmName].Clone();
             sort(arrClone, 0, arrClone.Length - 1);
         }
         private void merge(int[] arr, int l, int m, int r)
@@ -118,10 +128,10 @@ namespace BenchmarkingLab01
             }
 
         }
-        [Benchmark]
-        public void QuickSort()
+        //[Benchmark]
+        public void QuickSort2()
         {
-            int[] arrClone = (int[])arrays[ArrayName].Clone();
+            int[] arrClone = (int[])arrays[AlgorithmName].Clone();
             quickSort(arrClone, 0, arrClone.Length - 1);
         }
 
@@ -156,7 +166,15 @@ namespace BenchmarkingLab01
 
                 quickSort(arr, low, pi - 1);
                 quickSort(arr, pi + 1, high);
+
             }
         }
+        [Benchmark]
+        public void QuickSort()
+        {
+            int[] arrClone = (int[])arrays[AlgorithmName].Clone();
+            Array.Sort(arrClone);
+        }
+
     }
 }
